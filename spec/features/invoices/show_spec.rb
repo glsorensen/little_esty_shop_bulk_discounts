@@ -98,6 +98,15 @@ RSpec.describe 'invoices show' do
      within("#current-invoice-status") do
        expect(page).to_not have_content("in progress")
      end
-  end
+   end
 
+   it "shows total merchant revenue for this invoice" do
+     visit merchant_invoice_path(@merchant1, @invoice_1)
+     
+     within 'div.reports' do
+      expect(page).to have_content("#{@merchant1.name}'s Revenue:")
+      expect(page).to have_content("#{@merchant1.name}'s revenue after discounts:")
+      expect(page).to have_no_content("#{@merchant2.name}'s revenue after discounts:")
+    end
+  end
 end
