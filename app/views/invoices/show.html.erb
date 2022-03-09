@@ -20,10 +20,10 @@
   <br>
 
   <p> Created on: <%= @invoice.created_at.strftime("%A, %B %-d, %Y") %></p>
-  <p>Total Revenue: <%= @invoice.total_revenue %></p>
+  <p>Total Revenue: <%= monetize(@invoice.total_revenue) %></p>
   <div class="reports">
-    <<p><%= @merchant.name %>'s Revenue: $<%= @invoice.merchant_revenue(@merchant) %></p>
-    <p> <%= @merchant.name %>'s revenue after discounts: $<%=  @invoice.merchant_discounted_revenue(@merchant) %></p>
+    <<p><%= @merchant.name %>'s Revenue: <%= monetize(@invoice.merchant_revenue(@merchant)) %></p>
+    <p> <%= @merchant.name %>'s revenue after discounts: <%=  monetize(@invoice.merchant_discounted_revenue(@merchant)) %></p>
 
   </div>
 
@@ -49,11 +49,12 @@
           <tr class="tr">
             <td style="text-align:center"><%= i.item.name %></td>
             <td style="text-align:center"><%= i.quantity %></td>
-            <td style="text-align:center">$<%= i.unit_price %></td>
+            <td style="text-align:center"><%= monetize(i.unit_price) %></td>
             <td style="text-align:center"><%= form_with model: @invoice, url: merchant_invoice_path(@merchant, @invoice), method: :patch, local: true do |f| %>
                                             <%= f.select :status, Invoice.statuses.keys, selected: "#{@invoice.status}" %>
                                             <%= f.submit 'Update Invoice' %>
                                           <% end %></td><br/>
+
           </tr>
         </section>
       <% end %>
